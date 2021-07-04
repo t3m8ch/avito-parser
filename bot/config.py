@@ -9,7 +9,7 @@ from urlpath import URL
 PARSE_MODE = "HTML"
 LOG_FORMAT = "%(asctime)s - %(levelname)s - %(name)s - %(message)s"
 
-DEFAULT_DB_URL = "postgresql+asyncpg://localhost/telegram_bot"
+DEFAULT_DB_URL = "postgresql+asyncpg://localhost/avito_parser"
 
 
 class UpdateMethod(str, Enum):

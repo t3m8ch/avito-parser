@@ -4,7 +4,11 @@ import logging as log
 from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.utils import executor
+from apscheduler.jobstores.memory import MemoryJobStore
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from sqlalchemy.ext.asyncio import create_async_engine
 
+from bot.middlewares import setup_middlewares
 from config import config, UpdateMethod
 from handlers import register_handlers
 
@@ -41,8 +45,20 @@ def run():
     )
     dp = Dispatcher(bot, storage=storage)
 
+    # Scheduler
+    scheduler = AsyncIOScheduler(
+        jobstores={
+            "default": MemoryJobStore()
+        }
+    )
+    scheduler.start()
+
+    # DB
+    engine = create_async_engine(config.db_url)
+
     # Register
     register_handlers(dp)
+    setup_middlewares(dp, engine, scheduler, bot)
 
     # Start bot!
     if config.tg_update_method == UpdateMethod.LONG_POLLING:
