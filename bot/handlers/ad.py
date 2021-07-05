@@ -40,17 +40,11 @@ async def process_tag(message: types.Message, state: FSMContext, ad_service: AdS
 
     tag = message.text
 
-    # TODO: Remove debug info
-    await message.reply(
-        f"Tag = {tag}\n"
-        f"ChatID = {chat_id}\n"
-        f"Url = {url}"
-    )
-
     # TODO: Add validation URL
     await ad_service.subscribe_to_new_ads(SubscriptionModel(
         chat_id=chat_id,
-        url=url
+        url=url,
+        tag=tag
     ))
 
     await message.reply(
