@@ -23,9 +23,6 @@ class AdService:
         self._scheduler = scheduler
         self._bot = bot
 
-        # For IDE
-        self._initial_subscriptions: Optional[list[SubscriptionModel]] = None
-
     async def subscribe_to_new_ads(self, subscription: SubscriptionModel):
         await self._subscription_repo.add_subscription(subscription)
         self._add_job(subscription)
@@ -44,21 +41,16 @@ class AdService:
             },
         )
 
-    def _init_jobs(self):
-        if self._initial_subscriptions is not None:
-            for sub in self._initial_subscriptions:
-                self._add_job(sub)
 
-
+# TODO: Remove this
 async def create_ad_service(*,
                             ad_repo: BaseAdRepository,
                             subscription_repo: BaseSubscriptionRepository,
                             parser: BaseParser,
                             scheduler: BaseScheduler,
                             bot: Bot):
-    service = AdService(ad_repo, subscription_repo, parser, scheduler, bot)
-
-    subscriptions = await subscription_repo.get_subscriptions()
-    setattr(service, "_initial_subscriptions", subscriptions)
+    service = AdService(
+        ad_repo, subscription_repo, parser, scheduler, bot
+    )
 
     return service

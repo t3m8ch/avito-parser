@@ -8,7 +8,11 @@ from apscheduler.jobstores.memory import MemoryJobStore
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from sqlalchemy.ext.asyncio import create_async_engine
 
+from bot.db.alchemy.ad import AlchemyAdRepository
+from bot.db.alchemy.subscription import AlchemySubscriptionRepository
+from bot.jobs import send_new_ads_job
 from bot.middlewares import setup_middlewares
+from bot.services.parsers.avito import AvitoParser
 from config import config, UpdateMethod
 from handlers import register_handlers
 
@@ -45,6 +49,9 @@ def run():
     )
     dp = Dispatcher(bot, storage=storage)
 
+    # DB
+    engine = create_async_engine(config.db_url)
+
     # Scheduler
     scheduler = AsyncIOScheduler(
         jobstores={
@@ -53,8 +60,23 @@ def run():
     )
     scheduler.start()
 
-    # DB
-    engine = create_async_engine(config.db_url)
+    # TODO: Refactor this
+    subscriptions = event_loop.run_until_complete(AlchemySubscriptionRepository(engine).get_subscriptions())
+    ad_repo = AlchemyAdRepository(engine)
+    parser = AvitoParser()
+    for sub in subscriptions:
+        scheduler.add_job(
+            send_new_ads_job,
+            "interval",
+            seconds=30,  # TODO: Change this value
+            kwargs={
+                "bot": bot,
+                "url": sub.url,
+                "chat_id": sub.chat_id,
+                "ad_repo": ad_repo,
+                "parser": parser
+            },
+        )
 
     # Register
     register_handlers(dp)
