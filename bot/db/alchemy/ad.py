@@ -14,20 +14,24 @@ class AlchemyAdRepository(BaseAdRepository):
         self._engine = engine
 
     async def add_ads(self, ads: Iterable[AdModel]) -> Iterable[AdModel]:
+        ads = [
+            {
+                "title": ad.title,
+                "price": ad.price,
+                "url": ad.url,
+                "subscription_id": select(SubscriptionTable.id)
+                    .where(SubscriptionTable.chat_id == ad.subscription.chat_id)
+                    .where(SubscriptionTable.url == ad.subscription.url)
+            }
+            for ad in ads
+        ]
+        if not ads:
+            return []
+
         async with AsyncSession(self._engine, future=True) as session:
             rows = await session.execute(
                 psql_insert(AdTable)
-                .values([
-                    {
-                        "title": ad.title,
-                        "price": ad.price,
-                        "url": ad.url,
-                        "subscription_id": select(SubscriptionTable.id)
-                            .where(SubscriptionTable.chat_id == ad.subscription.chat_id)
-                            .where(SubscriptionTable.url == ad.subscription.url)
-                    }
-                    for ad in ads
-                ])
+                .values(ads)
                 .on_conflict_do_nothing()
                 .returning(AdTable)
             )
