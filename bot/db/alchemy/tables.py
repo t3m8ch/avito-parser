@@ -1,5 +1,5 @@
-from sqlalchemy import Column, Integer, String, Numeric
-from sqlalchemy.orm import declarative_base
+from sqlalchemy import Column, Integer, String, Numeric, UniqueConstraint, ForeignKey
+from sqlalchemy.orm import declarative_base, relationship
 
 Base = declarative_base()
 
@@ -10,8 +10,12 @@ class AdTable(Base):
     id = Column(Integer, primary_key=True)
     title = Column(String, nullable=False)
     price = Column(Numeric, nullable=True)
-    url = Column(String, nullable=False, unique=True)
+    url = Column(String, nullable=False)
+    subscription_id = Column(Integer, ForeignKey("subscription.id"), nullable=False)
 
+    __table_args__ = (UniqueConstraint("subscription_id", "url"), )
+
+    # TODO: Change this
     def __repr__(self):
         return f"AdTable(" \
                f"id={self.id!r}, " \
@@ -23,9 +27,15 @@ class AdTable(Base):
 class SubscriptionTable(Base):
     __tablename__ = "subscription"
 
-    chat_id = Column(Integer, primary_key=True, autoincrement=False, nullable=False)
-    url = Column(String, nullable=False, unique=True)
+    id = Column(Integer, primary_key=True)
+    chat_id = Column(Integer, nullable=False)
+    url = Column(String, nullable=False)
 
+    ads = relationship("AdTable")
+
+    __table_args__ = (UniqueConstraint("chat_id", "url"), )
+
+    # TODO: Change this
     def __repr__(self):
         return f"SubscriptionTable(" \
                f"chat_id={self.chat_id!r}, " \

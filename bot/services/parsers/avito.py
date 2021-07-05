@@ -1,14 +1,15 @@
 from decimal import Decimal
-from typing import Iterable
+from typing import Iterable, Optional
 
 from bs4 import BeautifulSoup
 
-from bot.models import AdModel
+from bot.models import AdModel, SubscriptionModel
 from bot.services.parsers.base import BaseParser
 
 
 class AvitoParser(BaseParser):
-    def parse(self, html: str) -> Iterable[AdModel]:
+    def parse(self, html: str, subscription: Optional[SubscriptionModel] = None) \
+            -> Iterable[AdModel]:
         soup = BeautifulSoup(html, "lxml")
         items = soup.find_all(class_="iva-item-root-G3n7v")
         for i in items:
@@ -23,5 +24,6 @@ class AvitoParser(BaseParser):
             yield AdModel(
                 title=title,
                 price=price,
-                url=url
+                url=url,
+                subscription=subscription
             )
