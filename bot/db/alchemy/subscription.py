@@ -18,7 +18,8 @@ class AlchemySubscriptionRepository(BaseSubscriptionRepository):
             await session.execute(
                 insert(SubscriptionTable).values(
                     chat_id=subscription.chat_id,
-                    url=subscription.url
+                    url=subscription.url,
+                    tag=subscription.tag
                 )
             )
             await session.commit()
@@ -32,7 +33,8 @@ class AlchemySubscriptionRepository(BaseSubscriptionRepository):
             return list(
                 SubscriptionModel(
                     chat_id=sub.chat_id,
-                    url=sub.url
+                    url=sub.url,
+                    tag=sub.tag
                 )
                 for sub in subscriptions.scalars().all()
             )

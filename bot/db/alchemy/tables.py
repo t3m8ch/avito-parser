@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Numeric, UniqueConstraint, ForeignKey
+from sqlalchemy import Column, Integer, String, Numeric, UniqueConstraint, ForeignKey, func
 from sqlalchemy.orm import declarative_base, relationship
 
 Base = declarative_base()
@@ -30,6 +30,7 @@ class SubscriptionTable(Base):
     id = Column(Integer, primary_key=True)
     chat_id = Column(Integer, nullable=False)
     url = Column(String, nullable=False)
+    tag = Column(String, nullable=True)
 
     ads = relationship("AdTable")
 

@@ -7,6 +7,7 @@ from pydantic import BaseModel
 class SubscriptionModel(BaseModel):
     chat_id: int
     url: str
+    tag: Optional[str]
 
 
 class AdModel(BaseModel):
