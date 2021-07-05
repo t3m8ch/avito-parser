@@ -13,6 +13,8 @@ class AdTable(Base):
     url = Column(String, nullable=False)
     subscription_id = Column(Integer, ForeignKey("subscription.id"), nullable=False)
 
+    __table_args__ = (UniqueConstraint("subscription_id", "url"), )
+
     # TODO: Change this
     def __repr__(self):
         return f"AdTable(" \
