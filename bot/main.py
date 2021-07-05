@@ -12,6 +12,7 @@ from bot.db.alchemy.ad import AlchemyAdRepository
 from bot.db.alchemy.subscription import AlchemySubscriptionRepository
 from bot.jobs import send_new_ads_job
 from bot.middlewares import setup_middlewares
+from bot.services.ad import create_ad_service
 from bot.services.parsers.avito import AvitoParser
 from config import config, UpdateMethod
 from handlers import register_handlers
@@ -60,23 +61,14 @@ def run():
     )
     scheduler.start()
 
-    # TODO: Refactor this
-    subscriptions = event_loop.run_until_complete(AlchemySubscriptionRepository(engine).get_subscriptions())
-    ad_repo = AlchemyAdRepository(engine)
-    parser = AvitoParser()
-    for sub in subscriptions:
-        scheduler.add_job(
-            send_new_ads_job,
-            "interval",
-            seconds=30,  # TODO: Change this value
-            kwargs={
-                "bot": bot,
-                "url": sub.url,
-                "chat_id": sub.chat_id,
-                "ad_repo": ad_repo,
-                "parser": parser
-            },
-        )
+    # Subscriptions
+    ad_service = create_ad_service(
+        parser=AvitoParser(),
+        engine=engine,
+        scheduler=scheduler,
+        bot=bot
+    )
+    event_loop.run_until_complete(ad_service.init_jobs())
 
     # Register
     register_handlers(dp)

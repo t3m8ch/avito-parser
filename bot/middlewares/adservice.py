@@ -21,13 +21,10 @@ class AdServiceMiddleware(BaseMiddleware):
 
     async def on_process_message(self, message: types.Message, data: dict):
         # TODO: Create an AdService instance only if required
-        ad_repo = AlchemyAdRepository(self._alchemy_async_engine)
-        subscription_repo = AlchemySubscriptionRepository(self._alchemy_async_engine)
         parser = AvitoParser()  # TODO: Add a check that the url links to Avito
 
-        data["ad_service"] = await create_ad_service(
-            ad_repo=ad_repo,
-            subscription_repo=subscription_repo,
+        data["ad_service"] = create_ad_service(
+            engine=self._alchemy_async_engine,
             parser=parser,
             scheduler=self._scheduler,
             bot=self._bot
