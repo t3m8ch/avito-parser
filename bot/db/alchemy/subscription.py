@@ -40,6 +40,7 @@ class AlchemySubscriptionRepository(BaseSubscriptionRepository):
 
             return list(
                 SubscriptionModel(
+                    id=sub.id,
                     chat_id=sub.chat_id,
                     url=sub.url
                 )
