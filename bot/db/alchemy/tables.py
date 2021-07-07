@@ -11,7 +11,11 @@ class AdTable(Base):
     title = Column(String, nullable=False)
     price = Column(Numeric, nullable=True)
     url = Column(String, nullable=False)
-    subscription_id = Column(Integer, ForeignKey("subscription.id"), nullable=False)
+    subscription_id = Column(
+        Integer,
+        ForeignKey("subscription.id", ondelete="CASCADE"),
+        nullable=False
+    )
 
     __table_args__ = (UniqueConstraint("subscription_id", "url"), )
 
@@ -31,7 +35,7 @@ class SubscriptionTable(Base):
     chat_id = Column(Integer, nullable=False)
     url = Column(String, nullable=False)
 
-    ads = relationship("AdTable")
+    ads = relationship("AdTable", cascade="all, delete")
 
     __table_args__ = (UniqueConstraint("chat_id", "url"), )
 
