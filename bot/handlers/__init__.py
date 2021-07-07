@@ -1,4 +1,4 @@
-from . import general, subscribe
+from . import general, subscribe, unsubscribe
 
 
 def register_handlers(dp):
@@ -15,4 +15,5 @@ def register_handlers(dp):
     Remember that the order of handlers is important!
     """
     subscribe.router.register_handlers(dp)
+    unsubscribe.router.register_handlers(dp)
     general.router.register_handlers(dp)

@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import Optional
 
 from bot.models import SubscriptionModel
 
@@ -9,5 +10,6 @@ class BaseSubscriptionRepository(ABC):
         pass
 
     @abstractmethod
-    async def get_subscriptions(self) -> list[SubscriptionModel]:
+    async def get_subscriptions(self, chat_id: Optional[int] = None) \
+            -> list[SubscriptionModel]:
         pass

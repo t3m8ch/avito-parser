@@ -1,3 +1,5 @@
+from typing import Optional
+
 from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert as psql_insert
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
@@ -27,11 +29,14 @@ class AlchemySubscriptionRepository(BaseSubscriptionRepository):
 
             await session.commit()
 
-    async def get_subscriptions(self) -> list[SubscriptionModel]:
+    async def get_subscriptions(self, chat_id: Optional[int] = None) \
+            -> list[SubscriptionModel]:
+        query = select(SubscriptionTable)
+        if chat_id:
+            query = query.where(SubscriptionTable.chat_id == chat_id)
+
         async with AsyncSession(self._engine) as session:
-            subscriptions = await session.execute(
-                select(SubscriptionTable)
-            )
+            subscriptions = await session.execute(query)
 
             return list(
                 SubscriptionModel(
