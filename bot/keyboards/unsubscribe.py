@@ -12,7 +12,12 @@ def get_unsubscribe_keyboard(subscriptions: list[tuple[int, SubscriptionModel]])
     keyboard = InlineKeyboardMarkup(row_width=5)
 
     buttons = [
-        InlineKeyboardButton(text=str(i), callback_data=str(sub.id))
+        InlineKeyboardButton(
+            text=str(i),
+            callback_data=unsubscribe_cd.new(
+                subscribe_id=str(sub.id)
+            )
+        )
         for i, sub in subscriptions
     ]
     keyboard.add(*buttons)
