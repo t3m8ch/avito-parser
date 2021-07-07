@@ -1,6 +1,6 @@
 from typing import Optional
 
-from sqlalchemy import select
+from sqlalchemy import select, delete
 from sqlalchemy.dialects.postgresql import insert as psql_insert
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
 
@@ -46,3 +46,11 @@ class AlchemySubscriptionRepository(BaseSubscriptionRepository):
                 )
                 for sub in subscriptions.scalars().all()
             )
+
+    async def remove_subscription(self, sub_id: int):
+        async with AsyncSession(self._engine) as session:
+            await session.execute(
+                delete(SubscriptionTable)
+                .where(SubscriptionTable.id == sub_id)
+            )
+            await session.commit()

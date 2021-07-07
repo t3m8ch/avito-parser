@@ -37,6 +37,9 @@ class AdService:
     async def get_subscriptions(self, chat_id: int) -> list[SubscriptionModel]:
         return await self._subscription_repo.get_subscriptions(chat_id)
 
+    async def remove_subscription(self, sub_id: int):
+        await self._subscription_repo.remove_subscription(sub_id)
+
     async def init_jobs(self):
         subscriptions = await self._subscription_repo.get_subscriptions()
         for sub in subscriptions:
