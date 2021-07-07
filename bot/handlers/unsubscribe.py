@@ -15,6 +15,10 @@ async def cmd_unsubscribe(message: types.Message, ad_service: AdService):
         enumerate(await ad_service.get_subscriptions(chat_id))
     )
 
+    if not subs:
+        await message.answer("Вам не от чего отписываться")
+        return
+
     text = f"От чего вы хотите отписаться?\n" + "\n".join(
         f"\n{i}. {sub.url}"
         for i, sub in subs
