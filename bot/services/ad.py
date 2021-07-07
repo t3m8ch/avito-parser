@@ -1,9 +1,8 @@
-from typing import Optional
-
 from aiogram import Bot
 from apscheduler.schedulers.base import BaseScheduler
 from sqlalchemy.ext.asyncio import AsyncEngine
 
+from bot.config import config
 from bot.db.ad import BaseAdRepository
 from bot.db.alchemy.ad import AlchemyAdRepository
 from bot.db.alchemy.subscription import AlchemySubscriptionRepository
@@ -11,7 +10,6 @@ from bot.db.subscription import BaseSubscriptionRepository
 from bot.errors import NotValidUrlError
 from bot.jobs import send_new_ads_job, SendNewAdsJobCallback
 from bot.models import SubscriptionModel
-from bot.services.parsers.avito import AvitoParser
 from bot.services.parsers.base import BaseParser
 
 
@@ -45,7 +43,7 @@ class AdService:
         self._scheduler.add_job(
             send_new_ads_job,
             "interval",
-            seconds=30,  # TODO: Change this value
+            seconds=config.check_interval_seconds,  # TODO: Change this value
             kwargs={
                 "bot": self._bot,
                 "url": subscription.url,

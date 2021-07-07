@@ -40,6 +40,8 @@ class Config(BaseSettings):
 
     db_url: str = DEFAULT_DB_URL
 
+    check_interval_seconds: int = 180
+
     @property
     def tg_update_method(self) -> UpdateMethod:
         return UpdateMethod.LONG_POLLING if not self.tg_webhook_host else UpdateMethod.WEBHOOKS
