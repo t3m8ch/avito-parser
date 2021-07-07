@@ -8,6 +8,7 @@ from bot.db.ad import BaseAdRepository
 from bot.db.alchemy.ad import AlchemyAdRepository
 from bot.db.alchemy.subscription import AlchemySubscriptionRepository
 from bot.db.subscription import BaseSubscriptionRepository
+from bot.errors import NotValidUrlError
 from bot.jobs import send_new_ads_job, SendNewAdsJobCallback
 from bot.models import SubscriptionModel
 from bot.services.parsers.avito import AvitoParser
@@ -28,6 +29,10 @@ class AdService:
         self._bot = bot
 
     async def subscribe_to_new_ads(self, subscription: SubscriptionModel):
+        is_valid = self._parser.validate_url(subscription.url)
+        if not is_valid:
+            raise NotValidUrlError(subscription.url)
+
         await self._subscription_repo.add_subscription(subscription)
         self._add_job(subscription)
 

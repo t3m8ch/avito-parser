@@ -1,13 +1,21 @@
+import re
 from decimal import Decimal
 from typing import Iterable, Optional
 
 from bs4 import BeautifulSoup
+from urlpath import URL
 
 from bot.models import AdModel, SubscriptionModel
 from bot.services.parsers.base import BaseParser
 
 
 class AvitoParser(BaseParser):
+    def validate_url(self, url: str) -> bool:
+        url = URL(url)
+        return bool(
+            re.search(r"([a-z0-9\.]|^)avito\.ru$", str(url.hostname))
+        )
+
     def parse(self, html: str, subscription: Optional[SubscriptionModel] = None) \
             -> Iterable[AdModel]:
         soup = BeautifulSoup(html, "lxml")

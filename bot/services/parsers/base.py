@@ -7,6 +7,10 @@ from bot.models import AdModel, SubscriptionModel
 
 class BaseParser(ABC):
     @abstractmethod
+    def validate_url(self, url: str) -> bool:
+        pass
+
+    @abstractmethod
     def parse(self, html: str, subscription: Optional[SubscriptionModel] = None) \
             -> Iterable[AdModel]:
         pass
