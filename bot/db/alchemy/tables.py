@@ -15,13 +15,13 @@ class AdTable(Base):
 
     __table_args__ = (UniqueConstraint("subscription_id", "url"), )
 
-    # TODO: Change this
     def __repr__(self):
         return f"AdTable(" \
                f"id={self.id!r}, " \
-               f"name={self.title!r}, " \
-               f"price={self.price!r}, " \
-               f"url={self.url!r})"
+               f"title={self.title!r}, " \
+               f"price={self.price!r}" \
+               f"url={self.url!r}, " \
+               f"subscription_id={self.subscription!r})"
 
 
 class SubscriptionTable(Base):
@@ -35,8 +35,8 @@ class SubscriptionTable(Base):
 
     __table_args__ = (UniqueConstraint("chat_id", "url"), )
 
-    # TODO: Change this
     def __repr__(self):
         return f"SubscriptionTable(" \
+               f"id={self.id!r}, " \
                f"chat_id={self.chat_id!r}, " \
                f"url=({self.url!r})"
