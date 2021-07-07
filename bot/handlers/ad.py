@@ -2,6 +2,7 @@ from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import StatesGroup, State
 
+from bot.errors import SubscriptionAlreadyExistsError
 from bot.misc import Router
 from bot.models import SubscriptionModel
 from bot.services.ad import AdService
@@ -25,12 +26,17 @@ async def process_url(message: types.Message, state: FSMContext, ad_service: AdS
     url = message.text
 
     # TODO: Add validation URL
-    await ad_service.subscribe_to_new_ads(SubscriptionModel(
-        chat_id=chat_id,
-        url=url
-    ))
-
-    await message.reply(
-        f"Вы подписаны на получение новых объявлений по этому адресу:\n{url}"
-    )
-    await state.finish()
+    try:
+        await ad_service.subscribe_to_new_ads(SubscriptionModel(
+            chat_id=chat_id,
+            url=url
+        ))
+    except SubscriptionAlreadyExistsError:
+        await message.reply(
+            f"Вы уже подписаны на новые объявления по адресу:\n{url}"
+        )
+    else:
+        await message.reply(
+            f"Вы подписаны на получение новых объявлений по этому адресу:\n{url}"
+        )
+        await state.finish()

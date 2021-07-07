@@ -1,10 +1,10 @@
-from typing import AsyncIterable
-
-from sqlalchemy import insert, select
+from sqlalchemy import select
+from sqlalchemy.dialects.postgresql import insert as psql_insert
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
 
 from bot.db.alchemy.tables import SubscriptionTable
 from bot.db.subscription import BaseSubscriptionRepository
+from bot.errors import SubscriptionAlreadyExistsError
 from bot.models import SubscriptionModel
 
 
@@ -13,14 +13,18 @@ class AlchemySubscriptionRepository(BaseSubscriptionRepository):
         self._engine = engine
 
     async def add_subscription(self, subscription: SubscriptionModel):
-        # TODO: Add existing URL error handling
         async with AsyncSession(self._engine) as session:
-            await session.execute(
-                insert(SubscriptionTable).values(
+            subs = (await session.execute(
+                psql_insert(SubscriptionTable).values(
                     chat_id=subscription.chat_id,
                     url=subscription.url
-                )
-            )
+                ).on_conflict_do_nothing()
+                .returning(SubscriptionTable.id)
+            )).fetchall()
+
+            if not subs:
+                raise SubscriptionAlreadyExistsError()
+
             await session.commit()
 
     async def get_subscriptions(self) -> list[SubscriptionModel]:
