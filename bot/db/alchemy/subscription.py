@@ -47,10 +47,18 @@ class AlchemySubscriptionRepository(BaseSubscriptionRepository):
                 for sub in subscriptions.scalars().all()
             )
 
-    async def remove_subscription(self, sub_id: int):
+    async def remove_subscription(self, sub_id: int) -> SubscriptionModel:
         async with AsyncSession(self._engine) as session:
-            await session.execute(
+            sub = await session.execute(
                 delete(SubscriptionTable)
                 .where(SubscriptionTable.id == sub_id)
+                .returning(SubscriptionTable)
             )
             await session.commit()
+
+        sub = sub.fetchall()[0]
+        return SubscriptionModel(
+            id=sub.id,
+            chat_id=sub.chat_id,
+            url=sub.url
+        )

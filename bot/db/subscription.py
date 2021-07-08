@@ -15,5 +15,5 @@ class BaseSubscriptionRepository(ABC):
         pass
 
     @abstractmethod
-    async def remove_subscription(self, sub_id: int):
+    async def remove_subscription(self, sub_id: int) -> SubscriptionModel:
         pass

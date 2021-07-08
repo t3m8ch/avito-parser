@@ -38,7 +38,8 @@ class AdService:
         return await self._subscription_repo.get_subscriptions(chat_id)
 
     async def remove_subscription(self, sub_id: int):
-        await self._subscription_repo.remove_subscription(sub_id)
+        sub = await self._subscription_repo.remove_subscription(sub_id)
+        self._remove_job(sub)
 
     async def init_jobs(self):
         subscriptions = await self._subscription_repo.get_subscriptions()
@@ -58,6 +59,13 @@ class AdService:
                 "parser": self._parser
             },
         )
+
+    def _remove_job(self, subscription: SubscriptionModel):
+        job = filter(
+                lambda j: j.kwargs["chat_id"] == subscription.chat_id and j.kwargs["url"] == subscription.url,
+                self._scheduler.get_jobs()
+        ).__next__()
+        self._scheduler.remove_job(job.id)
 
 
 def create_ad_service(*,
