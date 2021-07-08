@@ -27,6 +27,6 @@ async def send_new_ads_job(bot: Bot,
 
     for ad in ads:
         text = f"<b>{ad.title}</b>\n" \
-               f"Цена: {str(ad.price) + ' рублей' or 'не указана'}\n\n" \
+               f"Цена: {'{0:f}'.format(ad.price) + ' рублей' or 'не указана'}\n\n" \
                f"{ad.url}"
         await bot.send_message(chat_id, text)
