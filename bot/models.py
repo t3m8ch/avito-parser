@@ -5,6 +5,7 @@ from pydantic import BaseModel
 
 
 class SubscriptionModel(BaseModel):
+    id: Optional[int]
     chat_id: int
     url: str
 

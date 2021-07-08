@@ -1,4 +1,4 @@
-from . import general, ad
+from . import general, subscribe, unsubscribe
 
 
 def register_handlers(dp):
@@ -14,5 +14,6 @@ def register_handlers(dp):
     Each handler module must contain a router object.
     Remember that the order of handlers is important!
     """
-    ad.router.register_handlers(dp)
+    subscribe.router.register_handlers(dp)
+    unsubscribe.router.register_handlers(dp)
     general.router.register_handlers(dp)
