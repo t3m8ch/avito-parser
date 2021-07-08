@@ -1,7 +1,7 @@
-Aiogram template
-================
-
-Template for creating Python telegram bots using the Aiogram library. 🐍
+Avito Parser
+============
+A bot that allows you to receive notifications about new ads on Avito. 
+Written in Python using the Aiogram library. 🐍
 
 🏃 How do I run it?
 ----------------
