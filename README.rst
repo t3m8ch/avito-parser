@@ -33,7 +33,7 @@ Template for creating Python telegram bots using the Aiogram library. 🐍
         WEBAPP_HOST=localhost
         WEBAPP_PORT=3000
         LOG_LEVEL=INFO
-        DB_URL="postgresql+asyncpg://localhost/telegram_bot"
+        DB_URL="postgresql+asyncpg://localhost/avito_parser"
 
 
 #. Install the necessary dependencies with the help of **poetry** 🔽
@@ -41,6 +41,31 @@ Template for creating Python telegram bots using the Aiogram library. 🐍
     ::
 
         poetry install
+
+#. Copy **alembic.example.ini** to **alembic.ini** 🔄
+
+    ::
+
+        cp alembic.example.ini alembic.ini
+
+#. If you changed the default value of **DB_URL**,
+   change it in **alembic.ini** as well ❗
+
+    ::
+
+        sqlalchemy.url = insert://connection:string@to/postgres_here
+
+#. Create a database in Postgresql 🎩
+
+    ::
+
+        psql -c "create database avito_parser"
+
+#. Do the migrations 🐦
+
+    ::
+
+        poetry run alembic upgrade head
 
 #. Now you can run the bot! 🎉
 
