@@ -33,9 +33,3 @@ async def cmd_help(message: types.Message):
 @router.message()
 async def cmd_not_found(message: types.Message):
     await message.answer("Такой команды не существует :(")
-
-
-# -------- echo --------
-@router.message()
-async def echo(message: types.Message):
-    await message.reply(message.text)
