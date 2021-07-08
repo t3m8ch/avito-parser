@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "aiogram-template"
+name = "bot"
 version = "0.1.0"
 description = ""
 authors = ["Kudyakov Artem <t3m8ch@yandex.ru>"]
