@@ -34,6 +34,7 @@ Written in Python using the Aiogram library. 🐍
         WEBAPP_PORT=3000
         LOG_LEVEL=INFO
         DB_URL="postgresql+asyncpg://localhost/avito_parser"
+        CHECK_INTERVAL_SECONDS=180
 
 
 #. Install the necessary dependencies with the help of **poetry** 🔽
