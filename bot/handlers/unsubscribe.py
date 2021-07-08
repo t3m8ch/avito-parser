@@ -12,7 +12,10 @@ async def cmd_unsubscribe(message: types.Message, ad_service: AdService):
     chat_id = message.chat.id
 
     subs = list(
-        enumerate(await ad_service.get_subscriptions(chat_id))
+        enumerate(
+            await ad_service.get_subscriptions(chat_id),
+            start=1
+        )
     )
 
     if not subs:
