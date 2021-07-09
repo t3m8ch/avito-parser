@@ -3,6 +3,8 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import StatesGroup, State
 
 from bot.errors import SubscriptionAlreadyExistsError, NotValidUrlError
+from bot.keyboards.cancel import get_cancel_inline_keyboard
+from bot.keyboards.unsubscribe import get_unsubscribe_keyboard
 from bot.misc import Router
 from bot.models import SubscriptionModel
 from bot.services.ad import AdService
@@ -16,7 +18,10 @@ class SubscribeToNewAds(StatesGroup):
 
 @router.message(state="*", commands="subscribe")
 async def cmd_subscribe_to_new_ads(message: types.Message):
-    await message.answer("Отправьте ссылку со списком объявлений")
+    await message.answer(
+        "Отправьте ссылку со списком объявлений",
+        reply_markup=get_cancel_inline_keyboard()
+    )
     await SubscribeToNewAds.waiting_for_url.set()
 
 

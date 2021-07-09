@@ -1,6 +1,7 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.callback_data import CallbackData
 
+from bot.keyboards.cancel import CANCEL
 from bot.models import SubscriptionModel
 
 
@@ -21,5 +22,12 @@ def get_unsubscribe_keyboard(subscriptions: list[tuple[int, SubscriptionModel]])
         for i, sub in subscriptions
     ]
     keyboard.add(*buttons)
+
+    keyboard.add(
+        InlineKeyboardButton(
+            text="Отмена",
+            callback_data=CANCEL
+        )
+    )
 
     return keyboard
