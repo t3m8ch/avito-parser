@@ -42,6 +42,9 @@ class Config(BaseSettings):
 
     check_interval_seconds: int = 180
 
+    ssl_certificate_path: Optional[str]
+    ssl_private_key_path: Optional[str]
+
     @property
     def tg_update_method(self) -> UpdateMethod:
         return UpdateMethod.LONG_POLLING if not self.tg_webhook_host else UpdateMethod.WEBHOOKS
