@@ -2,6 +2,7 @@ from aiogram import types
 
 from bot.keyboards.unsubscribe import get_unsubscribe_keyboard, unsubscribe_cd
 from bot.misc import Router
+from bot.models import SubscriptionModel
 from bot.services.ad import AdService
 
 router = Router()
@@ -18,16 +19,9 @@ async def cmd_unsubscribe(message: types.Message, ad_service: AdService):
         )
     )
 
-    if not subs:
-        await message.answer("Вам не от чего отписываться")
-        return
-
-    text = f"От чего вы хотите отписаться?\n" + "\n".join(
-        f"\n{i}. {sub.url}"
-        for i, sub in subs
-    )
     await message.answer(
-        text, reply_markup=get_unsubscribe_keyboard(subs)
+        _get_message_text(subs),
+        reply_markup=get_unsubscribe_keyboard(subs)
     )
 
 
@@ -41,4 +35,14 @@ async def cq_unsubscribe(call: types.CallbackQuery,
     await call.answer(
         text="Вы успешно отписались от этих объявлений",
         show_alert=True
+    )
+
+
+def _get_message_text(subscriptions: list[tuple[int, SubscriptionModel]]):
+    if not subscriptions:
+        return "Вам не от чего отписываться"
+
+    return f"От чего вы хотите отписаться?\n" + "\n".join(
+        f"\n{i}. {sub.url}"
+        for i, sub in subscriptions
     )
