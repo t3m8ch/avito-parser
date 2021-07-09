@@ -32,6 +32,7 @@ class Config(BaseSettings):
     tg_admins_id: str
     tg_webhook_host: Optional[str]
     tg_webhook_path: str = "/bot"
+    tg_skip_updates: bool = False
 
     webapp_host: str = "localhost"
     webapp_port: int = 3000
