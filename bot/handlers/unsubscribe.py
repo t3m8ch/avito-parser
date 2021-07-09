@@ -14,13 +14,7 @@ async def cmd_unsubscribe(message: types.Message,
                           state: FSMContext,
                           ad_service: AdService):
     chat_id = message.chat.id
-
-    subs = list(
-        enumerate(
-            await ad_service.get_subscriptions(chat_id),
-            start=1
-        )
-    )
+    subs = await _get_subs(chat_id, ad_service)
 
     async with state.proxy() as data:
         data["subs"] = subs
@@ -45,13 +39,7 @@ async def cq_unsubscribe(call: types.CallbackQuery,
     )
 
     chat_id = call.message.chat.id
-
-    subs = list(
-        enumerate(
-            await ad_service.get_subscriptions(chat_id),
-            start=1
-        )
-    )
+    subs = await _get_subs(chat_id, ad_service)
 
     await call.message.edit_text(
         _get_message_text(subs),
@@ -66,4 +54,13 @@ def _get_message_text(subscriptions: list[tuple[int, SubscriptionModel]]):
     return f"От чего вы хотите отписаться?\n" + "\n".join(
         f"\n{i}. {sub.url}"
         for i, sub in subscriptions
+    )
+
+
+async def _get_subs(chat_id: int, ad_service: AdService):
+    return list(
+        enumerate(
+            await ad_service.get_subscriptions(chat_id),
+            start=1
+        )
     )
