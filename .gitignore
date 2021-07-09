@@ -1,6 +1,9 @@
 # Custom
 .pytest_cache
 alembic.ini
+*.pem
+*.key
+*.crt
 
 # Created by https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,vim,linux,macos,windows,emacs,pycharm+all
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,visualstudiocode,vim,linux,macos,windows,emacs,pycharm+all
