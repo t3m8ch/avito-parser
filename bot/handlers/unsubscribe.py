@@ -1,4 +1,5 @@
 from aiogram import types
+from aiogram.dispatcher import FSMContext
 
 from bot.keyboards.unsubscribe import get_unsubscribe_keyboard, unsubscribe_cd
 from bot.misc import Router
@@ -9,7 +10,9 @@ router = Router()
 
 
 @router.message(state="*", commands="unsubscribe")
-async def cmd_unsubscribe(message: types.Message, ad_service: AdService):
+async def cmd_unsubscribe(message: types.Message,
+                          state: FSMContext,
+                          ad_service: AdService):
     chat_id = message.chat.id
 
     subs = list(
@@ -18,6 +21,9 @@ async def cmd_unsubscribe(message: types.Message, ad_service: AdService):
             start=1
         )
     )
+
+    async with state.proxy() as data:
+        data["subs"] = subs
 
     await message.answer(
         _get_message_text(subs),
@@ -28,6 +34,7 @@ async def cmd_unsubscribe(message: types.Message, ad_service: AdService):
 @router.callback_query(unsubscribe_cd.filter())
 async def cq_unsubscribe(call: types.CallbackQuery,
                          callback_data: dict,
+                         state: FSMContext,
                          ad_service: AdService):
     sub_id = int(callback_data["subscribe_id"])
     await ad_service.remove_subscription(sub_id)  # TODO: Add processing of a non-existent subscription
@@ -35,6 +42,20 @@ async def cq_unsubscribe(call: types.CallbackQuery,
     await call.answer(
         text="Вы успешно отписались от этих объявлений",
         show_alert=True
+    )
+
+    chat_id = call.message.chat.id
+
+    subs = list(
+        enumerate(
+            await ad_service.get_subscriptions(chat_id),
+            start=1
+        )
+    )
+
+    await call.message.edit_text(
+        _get_message_text(subs),
+        reply_markup=get_unsubscribe_keyboard(subs)
     )
 
 
