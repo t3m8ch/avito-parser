@@ -1,5 +1,8 @@
+from typing import Optional
+
 from aiogram import types
 from aiogram.dispatcher import FSMContext
+from aiogram.types import InlineKeyboardMarkup
 
 from bot.keyboards.unsubscribe import get_unsubscribe_keyboard, unsubscribe_cd
 from bot.misc import Router
@@ -19,10 +22,8 @@ async def cmd_unsubscribe(message: types.Message,
     async with state.proxy() as data:
         data["subs"] = subs
 
-    await message.answer(
-        _get_message_text(subs),
-        reply_markup=get_unsubscribe_keyboard(subs)
-    )
+    text, keyboard = _get_message(subs)
+    await message.answer(text, reply_markup=keyboard)
 
 
 @router.callback_query(unsubscribe_cd.filter())
@@ -40,20 +41,19 @@ async def cq_unsubscribe(call: types.CallbackQuery,
     chat_id = call.message.chat.id
     subs = await _get_subs(chat_id, ad_service)
 
-    await call.message.edit_text(
-        _get_message_text(subs),
-        reply_markup=get_unsubscribe_keyboard(subs)
-    )
+    text, keyboard = _get_message(subs)
+    await call.message.edit_text(text, reply_markup=keyboard)
 
 
-def _get_message_text(subscriptions: list[tuple[int, SubscriptionModel]]):
+def _get_message(subscriptions: list[tuple[int, SubscriptionModel]])\
+        -> tuple[str, Optional[InlineKeyboardMarkup]]:
     if not subscriptions:
-        return "Вам не от чего отписываться"
+        return "Вам не от чего отписываться", None
 
     return f"От чего вы хотите отписаться?\n" + "\n".join(
         f"\n{i}. {sub.url}"
         for i, sub in subscriptions
-    )
+    ), get_unsubscribe_keyboard(subscriptions)
 
 
 async def _get_subs(chat_id: int, ad_service: AdService):
