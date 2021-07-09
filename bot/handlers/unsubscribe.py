@@ -28,10 +28,9 @@ async def cmd_unsubscribe(message: types.Message,
 @router.callback_query(unsubscribe_cd.filter())
 async def cq_unsubscribe(call: types.CallbackQuery,
                          callback_data: dict,
-                         state: FSMContext,
                          ad_service: AdService):
     sub_id = int(callback_data["subscribe_id"])
-    await ad_service.remove_subscription(sub_id)  # TODO: Add processing of a non-existent subscription
+    await ad_service.remove_subscription(sub_id)
 
     await call.answer(
         text="Вы успешно отписались от этих объявлений",
