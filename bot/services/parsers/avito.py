@@ -5,7 +5,7 @@ from typing import Iterable, Optional
 from bs4 import BeautifulSoup
 from urlpath import URL
 
-from bot.models import AdModel, SubscriptionModel
+from bot.misc.models import AdModel, SubscriptionModel
 from bot.services.parsers.base import BaseParser
 
 

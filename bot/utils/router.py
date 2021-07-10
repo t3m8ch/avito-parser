@@ -6,6 +6,7 @@ from aiogram import Dispatcher
 class Router:
     """It is for registering handlers using decorators,
     but without the global dispatcher variable"""
+
     def __init__(self):
         self._handlers = []
 
@@ -39,6 +40,7 @@ class Router:
         ... async def cmd_start(message: types.Message):
         ...     await message.reply("I'm bot!")
         """
+
         def decorator(handler):
             self.add_handler(handler, handler_registrar, *args, **kwargs)
             return handler

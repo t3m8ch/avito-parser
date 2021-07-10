@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from collections import Iterable
 from typing import Optional
 
-from bot.models import AdModel, SubscriptionModel
+from bot.misc.models import AdModel, SubscriptionModel
 
 
 class BaseParser(ABC):

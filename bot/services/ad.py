@@ -2,14 +2,14 @@ from aiogram import Bot
 from apscheduler.schedulers.base import BaseScheduler
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from bot.config import config
+from bot.utils.config import config
 from bot.db.ad import BaseAdRepository
 from bot.db.alchemy.ad import AlchemyAdRepository
 from bot.db.alchemy.subscription import AlchemySubscriptionRepository
 from bot.db.subscription import BaseSubscriptionRepository
-from bot.errors import NotValidUrlError
-from bot.jobs import send_new_ads_job, SendNewAdsJobCallback
-from bot.models import SubscriptionModel
+from bot.misc.errors import NotValidUrlError
+from bot.jobs import send_new_ads_job
+from bot.misc.models import SubscriptionModel
 from bot.services.parsers.base import BaseParser
 
 
@@ -62,8 +62,8 @@ class AdService:
 
     def _remove_job(self, subscription: SubscriptionModel):
         job = filter(
-                lambda j: j.kwargs["chat_id"] == subscription.chat_id and j.kwargs["url"] == subscription.url,
-                self._scheduler.get_jobs()
+            lambda j: j.kwargs["chat_id"] == subscription.chat_id and j.kwargs["url"] == subscription.url,
+            self._scheduler.get_jobs()
         ).__next__()
         self._scheduler.remove_job(job.id)
 

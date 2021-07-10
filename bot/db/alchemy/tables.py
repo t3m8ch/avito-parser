@@ -17,7 +17,7 @@ class AdTable(Base):
         nullable=False
     )
 
-    __table_args__ = (UniqueConstraint("subscription_id", "url"), )
+    __table_args__ = (UniqueConstraint("subscription_id", "url"),)
 
     def __repr__(self):
         return f"AdTable(" \
@@ -37,7 +37,7 @@ class SubscriptionTable(Base):
 
     ads = relationship("AdTable", cascade="all, delete")
 
-    __table_args__ = (UniqueConstraint("chat_id", "url"), )
+    __table_args__ = (UniqueConstraint("chat_id", "url"),)
 
     def __repr__(self):
         return f"SubscriptionTable(" \

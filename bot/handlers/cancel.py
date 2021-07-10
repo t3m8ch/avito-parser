@@ -2,7 +2,7 @@ from aiogram import types
 from aiogram.dispatcher import FSMContext
 
 from bot.keyboards.cancel import CANCEL
-from bot.misc import Router
+from bot.utils import Router
 
 router = Router()
 

@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 
-from bot.models import SubscriptionModel
+from bot.misc.models import SubscriptionModel
 
 
 class BaseSubscriptionRepository(ABC):
