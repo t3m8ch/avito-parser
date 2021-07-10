@@ -37,7 +37,7 @@ async def on_shutdown(dp: Dispatcher):
 def run():
     # Logging configuration
     log.basicConfig(
-        level=config.log_level,
+        level=log.getLevelName(config.log_level),
         format=config.log_format
     )
 
