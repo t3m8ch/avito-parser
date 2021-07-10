@@ -1,3 +1,4 @@
+import asyncio
 from typing import Callable, Coroutine, NewType
 
 import aiohttp
@@ -28,3 +29,4 @@ async def send_new_ads_job(bot: Bot,
                f"Цена: {'{0:f}'.format(ad.price) + ' рублей' or 'не указана'}\n\n" \
                f"{ad.url}"
         await bot.send_message(chat_id, text)
+        await asyncio.sleep(1)
