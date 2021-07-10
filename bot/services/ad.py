@@ -2,7 +2,7 @@ from aiogram import Bot
 from apscheduler.schedulers.base import BaseScheduler
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from bot.config import config
+from bot.misc.config import config
 from bot.db.ad import BaseAdRepository
 from bot.db.alchemy.ad import AlchemyAdRepository
 from bot.db.alchemy.subscription import AlchemySubscriptionRepository

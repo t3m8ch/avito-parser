@@ -12,7 +12,7 @@ from sqlalchemy.ext.asyncio import create_async_engine
 from bot.middlewares import setup_middlewares
 from bot.services.ad import create_ad_service
 from bot.services.parsers.avito import AvitoParser
-from config import config, UpdateMethod
+from bot.misc.config import config, UpdateMethod
 from handlers import register_handlers
 
 
