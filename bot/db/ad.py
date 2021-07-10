@@ -1,7 +1,7 @@
 from abc import abstractmethod, ABC
 from collections import Iterable
 
-from bot.models import AdModel
+from bot.misc.models import AdModel
 
 
 class BaseAdRepository(ABC):

@@ -6,7 +6,7 @@ from aiogram.types import InlineKeyboardMarkup
 
 from bot.keyboards.unsubscribe import get_unsubscribe_keyboard, unsubscribe_cd
 from bot.misc import Router
-from bot.models import SubscriptionModel
+from bot.misc.models import SubscriptionModel
 from bot.services.ad import AdService
 
 router = Router()

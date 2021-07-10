@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
 
 from bot.db.ad import BaseAdRepository
 from bot.db.alchemy.tables import AdTable, SubscriptionTable
-from bot.models import AdModel
+from bot.misc.models import AdModel
 
 
 class AlchemyAdRepository(BaseAdRepository):
