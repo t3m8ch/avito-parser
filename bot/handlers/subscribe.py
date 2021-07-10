@@ -2,7 +2,7 @@ from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import StatesGroup, State
 
-from bot.errors import SubscriptionAlreadyExistsError, NotValidUrlError
+from bot.misc.errors import SubscriptionAlreadyExistsError, NotValidUrlError
 from bot.keyboards.cancel import get_cancel_inline_keyboard
 from bot.misc import Router
 from bot.models import SubscriptionModel

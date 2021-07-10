@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
 
 from bot.db.alchemy.tables import SubscriptionTable
 from bot.db.subscription import BaseSubscriptionRepository
-from bot.errors import SubscriptionAlreadyExistsError
+from bot.misc.errors import SubscriptionAlreadyExistsError
 from bot.models import SubscriptionModel
 
 

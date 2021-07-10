@@ -7,7 +7,7 @@ from bot.db.ad import BaseAdRepository
 from bot.db.alchemy.ad import AlchemyAdRepository
 from bot.db.alchemy.subscription import AlchemySubscriptionRepository
 from bot.db.subscription import BaseSubscriptionRepository
-from bot.errors import NotValidUrlError
+from bot.misc.errors import NotValidUrlError
 from bot.jobs import send_new_ads_job
 from bot.models import SubscriptionModel
 from bot.services.parsers.base import BaseParser
