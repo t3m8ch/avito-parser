@@ -65,6 +65,13 @@ class Config(BaseSettings):
         # because The format depends on the logging library used
         return LOG_FORMAT
 
+    @property
+    def ssl_is_set(self):
+        return all([
+            self.ssl_certificate_path is not None,
+            self.ssl_private_key_path is not None,
+        ])
+
 
 config = Config(
     _env_file=".env",
