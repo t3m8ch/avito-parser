@@ -5,7 +5,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.types import InlineKeyboardMarkup
 
 from bot.keyboards.unsubscribe import get_unsubscribe_keyboard, unsubscribe_cd
-from bot.misc import Router
+from bot.utils import Router
 from bot.misc.models import SubscriptionModel
 from bot.services.ad import AdService
 
