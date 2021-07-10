@@ -27,10 +27,16 @@ Default values:
 ```dotenv
 TG_SKIP_UPDATES=NO
 TG_WEBHOOK_PATH=/bot
+
 WEBAPP_HOST=localhost
 WEBAPP_PORT=3000
+
 LOG_LEVEL=INFO
+
 DB_URL="postgresql+asyncpg://localhost/avito_parser"
+
+REDIS_PORT=6379
+
 CHECK_INTERVAL_SECONDS=180
 ```
 
@@ -39,6 +45,9 @@ Valid values of **TG_SKIP_UPDATES**: `YES/Y/TRUE/1` or `NO/N/FALSE/0`
 Webhooks can be used without setting SSL options if you use Certbot 
 certificates or a certificate purchased from a Certificate Authority 
 or if you use **Ngrok**.
+
+If you want to use **Redis** to store the states, specify the **REDIS_HOST** 
+parameter. Otherwise **MemoryStorage** will be used.
 
 ### 4. Install the necessary dependencies with the help of **poetry** 🔽
 ```bash

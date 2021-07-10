@@ -42,6 +42,11 @@ class Config(BaseSettings):
 
     check_interval_seconds: int = 180
 
+    redis_host: Optional[str]
+    redis_port: int = 6379
+    redis_db: Optional[int]
+    redis_password: Optional[str]
+
     ssl_certificate_path: Optional[str]
     ssl_private_key_path: Optional[str]
 
@@ -64,6 +69,10 @@ class Config(BaseSettings):
         # LOG_FORMAT must be specified in the code,
         # because The format depends on the logging library used
         return LOG_FORMAT
+
+    @property
+    def is_redis(self):
+        return self.redis_host is not None
 
     @property
     def ssl_is_set(self):

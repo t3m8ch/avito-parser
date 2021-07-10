@@ -4,6 +4,7 @@ import ssl
 
 from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
+from aiogram.contrib.fsm_storage.redis import RedisStorage
 from aiogram.utils import executor
 from apscheduler.jobstores.memory import MemoryJobStore
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
@@ -49,9 +50,22 @@ def run():
         format=config.log_format
     )
 
-    # Base
+    # Event loop
     event_loop = asyncio.get_event_loop()
-    storage = MemoryStorage()  # TODO: Redis
+
+    # Storage
+    if config.is_redis:
+        storage = RedisStorage(
+            config.redis_host,
+            config.redis_port,
+            config.redis_db,
+            config.redis_password,
+            loop=event_loop
+        )
+    else:
+        storage = MemoryStorage()
+
+    # Base
     bot = Bot(
         token=config.tg_token,
         parse_mode=config.tg_parse_mode

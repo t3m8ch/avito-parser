@@ -5,8 +5,8 @@ alembic.ini
 *.key
 *.crt
 
-# Created by https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,vim,linux,macos,windows,emacs,pycharm+all
-# Edit at https://www.toptal.com/developers/gitignore?templates=python,visualstudiocode,vim,linux,macos,windows,emacs,pycharm+all
+# Created by https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,vim,linux,macos,windows,emacs,pycharm+all,redis
+# Edit at https://www.toptal.com/developers/gitignore?templates=python,visualstudiocode,vim,linux,macos,windows,emacs,pycharm+all,redis
 
 ### Emacs ###
 # -*- mode: gitignore; -*-
@@ -333,6 +333,11 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+### Redis ###
+# Ignore redis binary dump (dump.rdb) files
+
+*.rdb
+
 ### Vim ###
 # Swap
 [._]*.s[a-v][a-z]
@@ -395,4 +400,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,vim,linux,macos,windows,emacs,pycharm+all
+# End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,vim,linux,macos,windows,emacs,pycharm+all,redis

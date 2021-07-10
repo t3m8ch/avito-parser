@@ -14,13 +14,9 @@ router = Router()
 
 @router.message(state="*", commands="unsubscribe")
 async def cmd_unsubscribe(message: types.Message,
-                          state: FSMContext,
                           ad_service: AdService):
     chat_id = message.chat.id
     subs = await _get_subs(chat_id, ad_service)
-
-    async with state.proxy() as data:
-        data["subs"] = subs
 
     text, keyboard = _get_message(subs)
     await message.answer(text, reply_markup=keyboard)
