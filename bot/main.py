@@ -9,9 +9,6 @@ from apscheduler.jobstores.memory import MemoryJobStore
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from sqlalchemy.ext.asyncio import create_async_engine
 
-from bot.db.alchemy.ad import AlchemyAdRepository
-from bot.db.alchemy.subscription import AlchemySubscriptionRepository
-from bot.jobs import send_new_ads_job
 from bot.middlewares import setup_middlewares
 from bot.services.ad import create_ad_service
 from bot.services.parsers.avito import AvitoParser

@@ -3,8 +3,6 @@ from aiogram.dispatcher.middlewares import BaseMiddleware
 from apscheduler.schedulers.base import BaseScheduler
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from bot.db.alchemy.ad import AlchemyAdRepository
-from bot.db.alchemy.subscription import AlchemySubscriptionRepository
 from bot.services.ad import create_ad_service, AdService
 from bot.services.parsers.avito import AvitoParser
 
