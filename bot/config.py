@@ -1,4 +1,3 @@
-import logging as log
 from enum import Enum
 from typing import Optional
 
@@ -17,14 +16,14 @@ class UpdateMethod(str, Enum):
     LONG_POLLING = "long_polling"
 
 
-class LogLevel(int, Enum):
-    CRITICAL = log.CRITICAL
-    FATAL = log.FATAL
-    ERROR = log.ERROR
-    WARNING = log.WARNING
-    WARN = log.WARN
-    INFO = log.INFO
-    DEBUG = log.DEBUG
+class LogLevel(str, Enum):
+    CRITICAL = "CRITICAL"
+    FATAL = "FATAL"
+    ERROR = "ERROR"
+    WARNING = "WARNING"
+    WARN = "WARN"
+    INFO = "INFO"
+    DEBUG = "DEBUG"
 
 
 class Config(BaseSettings):
@@ -32,6 +31,7 @@ class Config(BaseSettings):
     tg_admins_id: str
     tg_webhook_host: Optional[str]
     tg_webhook_path: str = "/bot"
+    tg_skip_updates: bool = False
 
     webapp_host: str = "localhost"
     webapp_port: int = 3000

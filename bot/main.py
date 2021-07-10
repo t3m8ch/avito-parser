@@ -48,7 +48,7 @@ async def on_shutdown(dp: Dispatcher):
 def run():
     # Logging configuration
     log.basicConfig(
-        level=config.log_level,
+        level=log.getLevelName(config.log_level),
         format=config.log_format
     )
 
@@ -92,7 +92,7 @@ def run():
             on_startup=on_startup,
             on_shutdown=on_shutdown,
             loop=event_loop,
-            skip_updates=True
+            skip_updates=config.tg_skip_updates
         )
 
     elif config.tg_update_method == UpdateMethod.WEBHOOKS:
@@ -113,7 +113,7 @@ def run():
             webhook_path=config.tg_webhook_path,
             host=config.webapp_host,
             port=config.webapp_port,
-            skip_updates=True,
+            skip_updates=config.tg_skip_updates,
             ssl_context=ssl_context
         )
 
