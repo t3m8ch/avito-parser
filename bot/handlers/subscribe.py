@@ -18,16 +18,18 @@ class SubscribeToNewAds(StatesGroup):
 
 @router.message(state="*", commands="subscribe")
 async def cmd_subscribe_to_new_ads(message: types.Message):
-    instruction_file_id = "AgACAgIAAxkBAAMpYOiQdAwUv0TVcuFSdI9vTn_IY2MAApS0MRvKrElLMvlyZxJndW0BAAMCAAN4AAMgBA"
+    instruction_file_url = "https://telegra.ph/file/583815bcebb623c47b8f1.png"
     text = "<b>Для того, чтобы подписаться на определённые объявления, вы должны:</b>\n\n" \
            "1. Зайти на сайт avito.ru;\n\n" \
            "2. Ввести в поиск нужный вам запрос, задать фильтры и нажать на <i>Найти</i>;\n\n" \
            "3. Скопировать URL из адресной строки вашего браузера и отправить его сюда."
+
     await message.answer_photo(
-        photo=instruction_file_id,
+        photo=instruction_file_url,
         caption=text,
         reply_markup=get_cancel_inline_keyboard()
     )
+
     await SubscribeToNewAds.waiting_for_url.set()
 
 
