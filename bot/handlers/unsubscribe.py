@@ -45,7 +45,7 @@ async def cq_unsubscribe(call: types.CallbackQuery,
     await call.message.edit_text(text, reply_markup=keyboard)
 
 
-def _get_message(subscriptions: list[tuple[int, SubscriptionModel]])\
+def _get_message(subscriptions: list[tuple[int, SubscriptionModel]]) \
         -> tuple[str, Optional[InlineKeyboardMarkup]]:
     if not subscriptions:
         return "Вам не от чего отписываться", None

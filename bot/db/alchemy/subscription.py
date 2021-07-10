@@ -21,7 +21,7 @@ class AlchemySubscriptionRepository(BaseSubscriptionRepository):
                     chat_id=subscription.chat_id,
                     url=subscription.url
                 ).on_conflict_do_nothing()
-                .returning(SubscriptionTable.id)
+                    .returning(SubscriptionTable.id)
             )).fetchall()
 
             if not subs:
@@ -51,8 +51,8 @@ class AlchemySubscriptionRepository(BaseSubscriptionRepository):
         async with AsyncSession(self._engine) as session:
             sub = await session.execute(
                 delete(SubscriptionTable)
-                .where(SubscriptionTable.id == sub_id)
-                .returning(SubscriptionTable)
+                    .where(SubscriptionTable.id == sub_id)
+                    .returning(SubscriptionTable)
             )
             await session.commit()
 

@@ -31,9 +31,9 @@ class AlchemyAdRepository(BaseAdRepository):
         async with AsyncSession(self._engine, future=True) as session:
             rows = await session.execute(
                 psql_insert(AdTable)
-                .values(ads)
-                .on_conflict_do_nothing()
-                .returning(AdTable)
+                    .values(ads)
+                    .on_conflict_do_nothing()
+                    .returning(AdTable)
             )
             await session.commit()
 

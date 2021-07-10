@@ -62,8 +62,8 @@ class AdService:
 
     def _remove_job(self, subscription: SubscriptionModel):
         job = filter(
-                lambda j: j.kwargs["chat_id"] == subscription.chat_id and j.kwargs["url"] == subscription.url,
-                self._scheduler.get_jobs()
+            lambda j: j.kwargs["chat_id"] == subscription.chat_id and j.kwargs["url"] == subscription.url,
+            self._scheduler.get_jobs()
         ).__next__()
         self._scheduler.remove_job(job.id)
 
