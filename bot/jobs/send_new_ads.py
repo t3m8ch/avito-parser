@@ -1,13 +1,11 @@
-from typing import Callable, Coroutine
+from typing import Callable, Coroutine, NewType
 
 import aiohttp
 from aiogram import Bot
 
 from bot.db.ad import BaseAdRepository
-from bot.models import SubscriptionModel
+from bot.misc.models import SubscriptionModel
 from bot.services.parsers.base import BaseParser
-
-SendNewAdsJobCallback = Callable[[Bot, str, int], Coroutine]
 
 
 async def send_new_ads_job(bot: Bot,

@@ -2,8 +2,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.callback_data import CallbackData
 
 from bot.keyboards.cancel import CANCEL
-from bot.models import SubscriptionModel
-
+from bot.misc.models import SubscriptionModel
 
 unsubscribe_cd = CallbackData("unsubscribe", "subscribe_id")
 

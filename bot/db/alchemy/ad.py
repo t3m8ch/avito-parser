@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
 
 from bot.db.ad import BaseAdRepository
 from bot.db.alchemy.tables import AdTable, SubscriptionTable
-from bot.models import AdModel
+from bot.misc.models import AdModel
 
 
 class AlchemyAdRepository(BaseAdRepository):
@@ -31,9 +31,9 @@ class AlchemyAdRepository(BaseAdRepository):
         async with AsyncSession(self._engine, future=True) as session:
             rows = await session.execute(
                 psql_insert(AdTable)
-                .values(ads)
-                .on_conflict_do_nothing()
-                .returning(AdTable)
+                    .values(ads)
+                    .on_conflict_do_nothing()
+                    .returning(AdTable)
             )
             await session.commit()
 
