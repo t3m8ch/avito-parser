@@ -1,5 +1,4 @@
 import asyncio
-from typing import Callable, Coroutine, NewType
 
 import aiohttp
 from aiogram import Bot
