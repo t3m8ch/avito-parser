@@ -1,6 +1,6 @@
 from typing import Optional
 
-from sqlalchemy import select, delete
+from sqlalchemy import select, delete, func
 from sqlalchemy.dialects.postgresql import insert as psql_insert
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
 
@@ -46,6 +46,15 @@ class AlchemySubscriptionRepository(BaseSubscriptionRepository):
                 )
                 for sub in subscriptions.scalars().all()
             )
+
+    async def get_subscriptions_count(self, chat_id: int) -> int:
+        async with AsyncSession(self._engine) as session:
+            count = (await session.execute(
+                select(func.count())
+                    .where(SubscriptionTable.chat_id == chat_id)
+            )).one()[0]
+
+        return count
 
     async def remove_subscription(self, sub_id: int) -> SubscriptionModel:
         async with AsyncSession(self._engine) as session:
