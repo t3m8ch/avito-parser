@@ -25,8 +25,8 @@ class GoogleSheetsService:
         
         await worksheet.insert_row(["Загаловок", "Цена", "Адрес"])
         await worksheet.insert_rows([
-            [ad.title, ad.price or "", ad.url]
+            [ad.title, str(ad.price) if ad.price else "", ad.url]
             for ad in ads
-        ])
+        ], row=2)
         
         return spreadsheet_url
