@@ -2,12 +2,14 @@ import asyncio
 import logging as log
 import ssl
 
+import gspread_asyncio
 from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.contrib.fsm_storage.redis import RedisStorage
 from aiogram.utils import executor
 from apscheduler.jobstores.memory import MemoryJobStore
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from google.oauth2.service_account import Credentials
 from sqlalchemy.ext.asyncio import create_async_engine
 
 from bot.middlewares import setup_middlewares
@@ -41,6 +43,15 @@ async def on_shutdown(dp: Dispatcher):
     await dp.storage.wait_closed()
 
     log.warning("BOT STOPPED!")
+
+
+def get_credentials():
+    return Credentials.from_service_account_file(
+        config.service_account_file_path
+    ).with_scopes([
+        "https://www.googleapis.com/auth/spreadsheets",
+        "https://www.googleapis.com/auth/drive"
+    ])
 
 
 def run():
@@ -83,18 +94,23 @@ def run():
     )
     scheduler.start()
 
+    # Google Sheets
+    gspread_client_manager = gspread_asyncio \
+        .AsyncioGspreadClientManager(get_credentials)
+
     # Subscriptions
     ad_service = create_ad_service(
         parser=AvitoParser(),
         engine=engine,
         scheduler=scheduler,
+        spreadsheet_client_manager=gspread_client_manager,
         bot=bot
     )
     event_loop.run_until_complete(ad_service.init_jobs())
 
     # Register
     register_handlers(dp)
-    setup_middlewares(dp, engine, scheduler, bot)
+    setup_middlewares(dp, engine, scheduler, gspread_client_manager, bot)
 
     # Start bot!
     if config.tg_update_method == UpdateMethod.LONG_POLLING:

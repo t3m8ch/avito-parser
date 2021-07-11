@@ -1,7 +1,9 @@
 from aiogram import Bot
 from apscheduler.schedulers.base import BaseScheduler
+from gspread_asyncio import AsyncioGspreadClientManager
 from sqlalchemy.ext.asyncio import AsyncEngine
 
+from bot.services.google_sheets import GoogleSheetsService
 from bot.utils.config import config
 from bot.db.ad import BaseAdRepository
 from bot.db.alchemy.ad import AlchemyAdRepository
@@ -18,11 +20,13 @@ class AdService:
                  ad_repo: BaseAdRepository,
                  subscription_repo: BaseSubscriptionRepository,
                  parser: BaseParser,  # TODO: Delegate the definition of the needed parser
+                 google_sheets_service: GoogleSheetsService,
                  scheduler: BaseScheduler,
                  bot: Bot):
         self._ad_repo = ad_repo
         self._subscription_repo = subscription_repo
         self._parser = parser
+        self._google_sheets_service = google_sheets_service
         self._scheduler = scheduler
         self._bot = bot
 
@@ -55,6 +59,11 @@ class AdService:
         sub = await self._subscription_repo.remove_subscription(sub_id)
         self._remove_job(sub)
 
+    async def get_url_to_ads_google_spreadsheets(self, chat_id: int) -> str:
+        ads = await self._ad_repo.get_ads(chat_id)
+        return await self._google_sheets_service \
+            .get_url_to_ads_spreadsheet(ads)
+
     async def init_jobs(self):
         subscriptions = await self._subscription_repo.get_subscriptions()
         for sub in subscriptions:
@@ -85,11 +94,13 @@ class AdService:
 def create_ad_service(*,
                       parser: BaseParser,
                       engine: AsyncEngine,
+                      spreadsheet_client_manager: AsyncioGspreadClientManager,
                       scheduler: BaseScheduler,
                       bot: Bot):
     ad_repo = AlchemyAdRepository(engine)
     subscription_repo = AlchemySubscriptionRepository(engine)
+    google_sheets_service = GoogleSheetsService(spreadsheet_client_manager)
 
     return AdService(
-        ad_repo, subscription_repo, parser, scheduler, bot
+        ad_repo, subscription_repo, parser, google_sheets_service, scheduler, bot
     )
