@@ -95,7 +95,7 @@ def run():
     scheduler.start()
 
     # Google Sheets
-    gspread_client_manager = gspread_asyncio \
+    google_sheets_client_manager = gspread_asyncio \
         .AsyncioGspreadClientManager(get_credentials)
 
     # Subscriptions
@@ -103,14 +103,14 @@ def run():
         parser=AvitoParser(),
         engine=engine,
         scheduler=scheduler,
-        spreadsheet_client_manager=gspread_client_manager,
+        google_sheets_client_manager=google_sheets_client_manager,
         bot=bot
     )
     event_loop.run_until_complete(ad_service.init_jobs())
 
     # Register
     register_handlers(dp)
-    setup_middlewares(dp, engine, scheduler, gspread_client_manager, bot)
+    setup_middlewares(dp, engine, scheduler, google_sheets_client_manager, bot)
 
     # Start bot!
     if config.tg_update_method == UpdateMethod.LONG_POLLING:

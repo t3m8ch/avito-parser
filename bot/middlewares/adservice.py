@@ -12,9 +12,9 @@ class AdServiceMiddleware(BaseMiddleware):
     def __init__(self,
                  alchemy_async_engine: AsyncEngine,
                  scheduler: BaseScheduler,
-                 gspread_client_manager: AsyncioGspreadClientManager,
+                 google_sheets_client_manager: AsyncioGspreadClientManager,
                  bot: Bot):
-        self._gspread_client_manager = gspread_client_manager
+        self._gspread_client_manager = google_sheets_client_manager
         self._alchemy_async_engine = alchemy_async_engine
         self._scheduler = scheduler
         self._bot = bot
@@ -28,7 +28,7 @@ class AdServiceMiddleware(BaseMiddleware):
             engine=self._alchemy_async_engine,
             parser=parser,
             scheduler=self._scheduler,
-            spreadsheet_client_manager=self._gspread_client_manager,
+            google_sheets_client_manager=self._gspread_client_manager,
             bot=self._bot
         )
 

@@ -94,12 +94,12 @@ class AdService:
 def create_ad_service(*,
                       parser: BaseParser,
                       engine: AsyncEngine,
-                      spreadsheet_client_manager: AsyncioGspreadClientManager,
+                      google_sheets_client_manager: AsyncioGspreadClientManager,
                       scheduler: BaseScheduler,
                       bot: Bot):
     ad_repo = AlchemyAdRepository(engine)
     subscription_repo = AlchemySubscriptionRepository(engine)
-    google_sheets_service = GoogleSheetsService(spreadsheet_client_manager)
+    google_sheets_service = GoogleSheetsService(google_sheets_client_manager)
 
     return AdService(
         ad_repo, subscription_repo, parser, google_sheets_service, scheduler, bot
