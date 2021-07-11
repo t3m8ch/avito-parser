@@ -47,6 +47,8 @@ class Config(BaseSettings):
     redis_db: Optional[int]
     redis_password: Optional[str]
 
+    service_account_file_path: str = "gsheets_credentials.json"
+
     ssl_certificate_path: Optional[str]
     ssl_private_key_path: Optional[str]
 
