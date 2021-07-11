@@ -2,7 +2,7 @@ from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import StatesGroup, State
 
-from bot.misc.errors import SubscriptionAlreadyExistsError, NotValidUrlError
+from bot.misc.errors import SubscriptionAlreadyExistsError, NotValidUrlError, LimitSubscriptionsCountError
 from bot.keyboards.cancel import get_cancel_inline_keyboard
 from bot.utils import Router
 from bot.misc.models import SubscriptionModel
@@ -50,6 +50,10 @@ async def process_url(message: types.Message, state: FSMContext, ad_service: AdS
         await message.reply(
             f"Вы кинули невалидный адрес!"
         )
+    except LimitSubscriptionsCountError:
+        text = f"Вы не можете сделать больше <b>двух</b> подписок.\n" \
+               f"Ограничение сделано с целью сохранение работоспособности бота."
+        await message.reply(text)
     else:
         await message.reply(
             f"Вы подписаны на получение новых объявлений по этому адресу:\n{url}"

@@ -15,5 +15,9 @@ class BaseSubscriptionRepository(ABC):
         pass
 
     @abstractmethod
+    async def get_subscriptions_count(self, chat_id: int) -> int:
+        pass
+
+    @abstractmethod
     async def remove_subscription(self, sub_id: int) -> SubscriptionModel:
         pass

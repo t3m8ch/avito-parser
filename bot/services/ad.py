@@ -7,7 +7,7 @@ from bot.db.ad import BaseAdRepository
 from bot.db.alchemy.ad import AlchemyAdRepository
 from bot.db.alchemy.subscription import AlchemySubscriptionRepository
 from bot.db.subscription import BaseSubscriptionRepository
-from bot.misc.errors import NotValidUrlError
+from bot.misc.errors import NotValidUrlError, LimitSubscriptionsCountError
 from bot.jobs import send_new_ads_job
 from bot.misc.models import SubscriptionModel
 from bot.services.parsers.base import BaseParser
@@ -30,6 +30,12 @@ class AdService:
         is_valid = self._parser.validate_url(subscription.url)
         if not is_valid:
             raise NotValidUrlError(subscription.url)
+
+        subscriptions_count = await self._subscription_repo \
+            .get_subscriptions_count(subscription.chat_id)
+
+        if subscriptions_count >= 2:
+            raise LimitSubscriptionsCountError(2)
 
         await self._subscription_repo.add_subscription(subscription)
         self._add_job(subscription)
