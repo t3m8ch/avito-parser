@@ -1,6 +1,7 @@
 from aiogram import types, Bot
 from aiogram.dispatcher.middlewares import BaseMiddleware
 from apscheduler.schedulers.base import BaseScheduler
+from gspread_asyncio import AsyncioGspreadClientManager
 from sqlalchemy.ext.asyncio import AsyncEngine
 
 from bot.services.ad import create_ad_service, AdService
@@ -11,7 +12,9 @@ class AdServiceMiddleware(BaseMiddleware):
     def __init__(self,
                  alchemy_async_engine: AsyncEngine,
                  scheduler: BaseScheduler,
+                 google_sheets_client_manager: AsyncioGspreadClientManager,
                  bot: Bot):
+        self._gspread_client_manager = google_sheets_client_manager
         self._alchemy_async_engine = alchemy_async_engine
         self._scheduler = scheduler
         self._bot = bot
@@ -25,6 +28,7 @@ class AdServiceMiddleware(BaseMiddleware):
             engine=self._alchemy_async_engine,
             parser=parser,
             scheduler=self._scheduler,
+            google_sheets_client_manager=self._gspread_client_manager,
             bot=self._bot
         )
 
