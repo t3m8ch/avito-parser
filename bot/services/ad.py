@@ -31,14 +31,22 @@ class AdService:
         if not is_valid:
             raise NotValidUrlError(subscription.url)
 
+        corrected_url = self._parser.correct_url(subscription.url)
+
         subscriptions_count = await self._subscription_repo \
             .get_subscriptions_count(subscription.chat_id)
 
         if subscriptions_count >= 2:
             raise LimitSubscriptionsCountError(2)
 
-        await self._subscription_repo.add_subscription(subscription)
-        self._add_job(subscription)
+        corrected_subscription = SubscriptionModel(
+            id=subscription.id,
+            chat_id=subscription.chat_id,
+            url=corrected_url
+        )
+
+        await self._subscription_repo.add_subscription(corrected_subscription)
+        self._add_job(corrected_subscription)
 
     async def get_subscriptions(self, chat_id: int) -> list[SubscriptionModel]:
         return await self._subscription_repo.get_subscriptions(chat_id)

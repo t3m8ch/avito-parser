@@ -11,6 +11,10 @@ class BaseParser(ABC):
         pass
 
     @abstractmethod
+    def correct_url(self, url: str) -> str:
+        pass
+
+    @abstractmethod
     def parse(self, html: str, subscription: Optional[SubscriptionModel] = None) \
             -> Iterable[AdModel]:
         pass

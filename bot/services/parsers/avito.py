@@ -16,6 +16,13 @@ class AvitoParser(BaseParser):
             re.search(r"([a-z0-9\.]|^)avito\.ru$", str(url.hostname))
         )
 
+    def correct_url(self, url: str) -> str:
+        is_mobile_version = "m.avito.ru" in url
+        if is_mobile_version:
+            return url.replace("m.", "", 1)  # Switch mobile version to desktop
+
+        return url
+
     def parse(self, html: str, subscription: Optional[SubscriptionModel] = None) \
             -> Iterable[AdModel]:
         soup = BeautifulSoup(html, "lxml")
