@@ -24,5 +24,13 @@ async def cmd_get_spreadsheet(message: types.Message):
 async def cq_choose_google_spreadsheets(call: types.CallbackQuery,
                                         ad_service: AdService):
     chat_id = call.message.chat.id
+
+    await call.message.edit_text(
+        "Пожалуйста, подождите, ваша таблица скоро будет готова ⏱"
+    )
+
     url = await ad_service.get_url_to_ads_google_spreadsheets(chat_id)
-    await call.message.answer(url)
+
+    await call.message.edit_text(
+        f"Ваша таблица готова ✅\n{url}"
+    )
