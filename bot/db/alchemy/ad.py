@@ -49,10 +49,10 @@ class AlchemyAdRepository(BaseAdRepository):
     async def get_ads(self, chat_id: int) -> Iterable[AdModel]:
         joined = join(AdTable, SubscriptionTable,
                       AdTable.subscription_id == SubscriptionTable.id)
+
         query = select(AdTable, SubscriptionTable.chat_id) \
                 .select_from(joined) \
                 .where(SubscriptionTable.chat_id == chat_id)
-        print(query)
 
         async with AsyncSession(self._engine, future=True) as session:
             rows = (await session.execute(query)).scalars().all()
