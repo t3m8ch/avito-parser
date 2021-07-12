@@ -4,7 +4,7 @@ from gspread_asyncio import AsyncioGspreadClientManager
 from sqlalchemy.ext.asyncio import AsyncEngine
 
 from bot.services.google_sheets import GoogleSheetsService
-from bot.utils.config import config
+from bot.utils.initializing_app.config import config
 from bot.db.ad import BaseAdRepository
 from bot.db.alchemy.ad import AlchemyAdRepository
 from bot.db.alchemy.subscription import AlchemySubscriptionRepository

@@ -9,16 +9,16 @@ from aiogram.contrib.fsm_storage.redis import RedisStorage
 from aiogram.utils import executor
 from apscheduler.jobstores.memory import MemoryJobStore
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from bot.utils.google_api import get_google_api_credentials
+from bot.utils.initializing_app.google_api import get_google_api_credentials
 
-from bot.utils.shutdown import on_shutdown
-from bot.utils.startup import on_startup
+from bot.utils.initializing_app.shutdown import on_shutdown
+from bot.utils.initializing_app.startup import on_startup
 from sqlalchemy.ext.asyncio import create_async_engine
 
 from bot.middlewares import setup_middlewares
 from bot.services.ad import create_ad_service
 from bot.services.parsers.avito import AvitoParser
-from bot.utils.config import config, UpdateMethod
+from bot.utils.initializing_app.config import config, UpdateMethod
 from handlers import register_handlers
 
 
