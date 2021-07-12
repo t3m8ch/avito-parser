@@ -22,7 +22,7 @@ from bot.utils.config import config, UpdateMethod
 from handlers import register_handlers
 
 
-def get_credentials():
+def get_google_api_credentials():
     return Credentials.from_service_account_file(
         config.service_account_file_path
     ).with_scopes([
@@ -73,7 +73,7 @@ def run():
 
     # Google Sheets
     google_sheets_client_manager = gspread_asyncio \
-        .AsyncioGspreadClientManager(get_credentials)
+        .AsyncioGspreadClientManager(get_google_api_credentials)
 
     # Subscriptions
     ad_service = create_ad_service(
