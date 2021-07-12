@@ -24,8 +24,9 @@ async def send_new_ads_job(bot: Bot,
     ads = await ad_repo.add_ads(ads)
 
     for ad in ads:
+        price_text = f"{ad.price:f} рублей" if ad.price else "не указана"
         text = f"<b>{ad.title}</b>\n" \
-               f"Цена: {'{0:f}'.format(ad.price) + ' рублей' or 'не указана'}\n\n" \
+               f"Цена: {price_text}\n\n" \
                f"{ad.url}"
         await bot.send_message(chat_id, text)
         await asyncio.sleep(1)
