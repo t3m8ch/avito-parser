@@ -11,7 +11,7 @@ from bot.utils import Router
 router = Router()
 
 
-@router.message(commands="getSpreadSheet")
+@router.message(commands="get_spread_sheet")
 async def cmd_get_spreadsheet(message: types.Message):
     await message.answer(
         "Где вы хотите создать таблицу?",
