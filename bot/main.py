@@ -1,6 +1,5 @@
 import asyncio
 import logging as log
-import ssl
 
 import gspread_asyncio
 from aiogram import Bot, Dispatcher
@@ -12,6 +11,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from bot.utils.initializing_app.google_api import get_google_api_credentials
 
 from bot.utils.initializing_app.shutdown import on_shutdown
+from bot.utils.initializing_app.ssl import get_ssl_context
 from bot.utils.initializing_app.startup import on_startup
 from sqlalchemy.ext.asyncio import create_async_engine
 
@@ -91,15 +91,6 @@ def run():
         )
 
     elif config.tg_update_method == UpdateMethod.WEBHOOKS:
-        if config.ssl_is_set:
-            ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
-            ssl_context.load_cert_chain(
-                config.ssl_certificate_path,
-                config.ssl_private_key_path
-            )
-        else:
-            ssl_context = None
-
         executor.start_webhook(
             dispatcher=dp,
             on_startup=on_startup,
@@ -109,7 +100,7 @@ def run():
             host=config.webapp_host,
             port=config.webapp_port,
             skip_updates=config.tg_skip_updates,
-            ssl_context=ssl_context
+            ssl_context=get_ssl_context()
         )
 
 
