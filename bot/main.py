@@ -9,6 +9,9 @@ from aiogram.contrib.fsm_storage.redis import RedisStorage
 from aiogram.utils import executor
 from apscheduler.jobstores.memory import MemoryJobStore
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
+
+from bot.utils.shutdown import on_shutdown
+from bot.utils.startup import on_startup
 from google.oauth2.service_account import Credentials
 from sqlalchemy.ext.asyncio import create_async_engine
 
@@ -17,32 +20,6 @@ from bot.services.ad import create_ad_service
 from bot.services.parsers.avito import AvitoParser
 from bot.utils.config import config, UpdateMethod
 from handlers import register_handlers
-
-
-async def on_startup(dp: Dispatcher):
-    if config.tg_update_method == UpdateMethod.WEBHOOKS:
-
-        if config.ssl_is_set:
-            with open(config.ssl_certificate_path, 'rb') as file:
-                ssl_certificate = file.read()
-        else:
-            ssl_certificate = None
-
-        await dp.bot.set_webhook(
-            url=config.tg_webhook_url,
-            certificate=ssl_certificate
-        )
-
-    log.warning("START BOT!")
-
-
-async def on_shutdown(dp: Dispatcher):
-    await dp.bot.delete_webhook()
-
-    await dp.storage.close()
-    await dp.storage.wait_closed()
-
-    log.warning("BOT STOPPED!")
 
 
 def get_credentials():
