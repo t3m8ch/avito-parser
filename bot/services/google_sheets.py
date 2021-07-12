@@ -11,7 +11,7 @@ class GoogleSheetsService:
     async def get_url_to_ads_spreadsheet(self, ads: Iterable[AdModel]) -> str:
         spreadsheet_client = await self._spreadsheet_client_manager.authorize()
 
-        spreadsheet = await spreadsheet_client.create("Ваши подписки")
+        spreadsheet = await spreadsheet_client.create("Ваши объявления")
         spreadsheet_url = f"https://docs.google.com/spreadsheets/d/{spreadsheet.id}"
 
         await spreadsheet_client.insert_permission(
