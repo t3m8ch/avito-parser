@@ -1,4 +1,4 @@
-from bot.handlers import google_sheets
+from bot.handlers import google_sheets, errors
 
 from . import (
     general,
@@ -26,3 +26,4 @@ def register_handlers(dp):
     subscribe.router.register_handlers(dp)
     unsubscribe.router.register_handlers(dp)
     general.router.register_handlers(dp)
+    errors.router.register_handlers(dp)

@@ -1,5 +1,9 @@
+from bot.misc.models import SubscriptionModel
+
+
 class SubscriptionAlreadyExistsError(Exception):
-    pass
+    def __init__(self, subscription: SubscriptionModel):
+        self.subscription = subscription
 
 
 class NotValidUrlError(Exception):

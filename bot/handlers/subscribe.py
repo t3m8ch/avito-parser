@@ -37,25 +37,12 @@ async def process_url(message: types.Message, state: FSMContext, ad_service: AdS
     chat_id = message.chat.id
     url = message.text
 
-    try:
-        await ad_service.subscribe_to_new_ads(SubscriptionModel(
-            chat_id=chat_id,
-            url=url
-        ))
-    except SubscriptionAlreadyExistsError:
-        await message.reply(
-            f"Вы уже подписаны на новые объявления по адресу:\n{url}"
-        )
-    except NotValidUrlError:
-        await message.reply(
-            f"Вы кинули невалидный адрес!"
-        )
-    except LimitSubscriptionsCountError:
-        text = f"Вы не можете сделать больше <b>двух</b> подписок.\n" \
-               f"Ограничение сделано с целью сохранение работоспособности бота."
-        await message.reply(text)
-    else:
-        await message.reply(
-            f"Вы подписаны на получение новых объявлений по этому адресу:\n{url}"
-        )
-        await state.finish()
+    await ad_service.subscribe_to_new_ads(SubscriptionModel(
+        chat_id=chat_id,
+        url=url
+    ))
+
+    await message.reply(
+        f"Вы подписаны на получение новых объявлений по этому адресу:\n{url}"
+    )
+    await state.finish()

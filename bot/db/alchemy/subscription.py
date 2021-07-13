@@ -25,7 +25,7 @@ class AlchemySubscriptionRepository(BaseSubscriptionRepository):
             )).fetchall()
 
             if not subs:
-                raise SubscriptionAlreadyExistsError()
+                raise SubscriptionAlreadyExistsError(subscription)
 
             await session.commit()
 
