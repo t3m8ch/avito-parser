@@ -9,7 +9,7 @@ from bot.db.ad import BaseAdRepository
 from bot.db.alchemy.ad import AlchemyAdRepository
 from bot.db.alchemy.subscription import AlchemySubscriptionRepository
 from bot.db.subscription import BaseSubscriptionRepository
-from bot.misc.errors import NotValidUrlError, LimitSubscriptionsCountError
+from bot.misc.errors import NotValidUrlError, LimitSubscriptionsCountError, UserHasNoAdsError
 from bot.jobs import send_new_ads_job
 from bot.misc.models import SubscriptionModel
 from bot.services.parsers.base import BaseParser
@@ -61,6 +61,9 @@ class AdService:
 
     async def get_url_to_ads_google_spreadsheets(self, chat_id: int) -> str:
         ads = await self._ad_repo.get_ads(chat_id)
+        if not ads:
+            raise UserHasNoAdsError()
+
         return await self._google_sheets_service \
             .get_url_to_ads_spreadsheet(ads)
 

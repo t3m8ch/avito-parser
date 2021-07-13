@@ -14,3 +14,7 @@ class NotValidUrlError(Exception):
 class LimitSubscriptionsCountError(Exception):
     def __init__(self, max_count: int):
         self.max_count = max_count
+
+
+class UserHasNoAdsError(Exception):
+    pass

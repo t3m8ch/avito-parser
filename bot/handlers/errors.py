@@ -2,7 +2,7 @@ from aiogram import types
 
 from bot.misc.errors import (SubscriptionAlreadyExistsError,
                              LimitSubscriptionsCountError,
-                             NotValidUrlError)
+                             NotValidUrlError, UserHasNoAdsError)
 
 from bot.utils import Router
 
@@ -30,5 +30,15 @@ async def limit_subscriptions_count_error(update: types.Update, _):
 async def not_valid_url_error(update: types.Update, _):
     await update.message.reply(
         f"Вы кинули невалидный адрес!"
+    )
+    return True
+
+
+@router.errors(exception=UserHasNoAdsError)
+async def user_has_no_ads_error(update: types.Update, _):
+    await update.callback_query.message.edit_text(
+        f"Бот <b>не отправил</b> Вам ни одного объявления!\n\n"
+        f"Подпишитесь на объявления (/subscribe) или немного подождите, "
+        f"если уже подписались."
     )
     return True
