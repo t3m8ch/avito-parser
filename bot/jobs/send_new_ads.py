@@ -23,10 +23,15 @@ async def send_new_ads_job(bot: Bot,
     ))
     ads = await ad_repo.add_ads(ads)
 
+    disable_notification = False
+    if len(ads) > 1:
+        await bot.send_message(chat_id, "Новые объявления!")
+        disable_notification = True
+
     for ad in ads:
         price_text = f"{ad.price:f} рублей" if ad.price else "не указана"
         text = f"<b>{ad.title}</b>\n" \
                f"Цена: {price_text}\n\n" \
                f"{ad.url}"
-        await bot.send_message(chat_id, text)
+        await bot.send_message(chat_id, text, disable_notification=disable_notification)
         await asyncio.sleep(1)

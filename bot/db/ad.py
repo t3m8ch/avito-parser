@@ -6,7 +6,7 @@ from bot.misc.models import AdModel
 
 class BaseAdRepository(ABC):
     @abstractmethod
-    async def add_ads(self, ads: Iterable[AdModel]) -> Iterable[AdModel]:
+    async def add_ads(self, ads: Iterable[AdModel]) -> list[AdModel]:
         """Adds nonexistent ads and returns only those ads that were added"""
         pass
 

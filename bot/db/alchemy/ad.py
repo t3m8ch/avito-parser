@@ -13,7 +13,7 @@ class AlchemyAdRepository(BaseAdRepository):
     def __init__(self, engine: AsyncEngine):
         self._engine = engine
 
-    async def add_ads(self, ads: Iterable[AdModel]) -> Iterable[AdModel]:
+    async def add_ads(self, ads: Iterable[AdModel]) -> list[AdModel]:
         ads = [
             {
                 "title": ad.title,
@@ -37,14 +37,14 @@ class AlchemyAdRepository(BaseAdRepository):
             )
             await session.commit()
 
-            return [
+            return list(
                 AdModel(
                     title=row.title,
                     price=row.price,
                     url=row.url
                 )
                 for row in rows
-            ]
+            )
 
     async def get_ads(self, chat_id: int) -> Iterable[AdModel]:
         joined = join(AdTable, SubscriptionTable,
